@@ -1,25 +1,20 @@
-﻿using SscPatrolLogger.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace SscPatrolLogger;
 
 public partial class App : Application
 {
-    public static PatrolRepository Repository { get; private set; } = null!;
+    private readonly IServiceProvider _services;
 
-    public App()
+    public App(IServiceProvider services)
     {
         InitializeComponent();
-
-        var dbPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "patrols.db3");
-
-        Repository = new PatrolRepository(dbPath);
+        _services = services;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        // This replaces MainPage = ...
-        return new Window(new NavigationPage(new MainPage(Repository)));
+        var shell = _services.GetRequiredService<AppShell>();
+        return new Window(shell);
     }
 }

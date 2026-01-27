@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace SscPatrolLogger;
 
-public partial class HistoryPage : BasePage
+public partial class HistoryPage : ContentPage
 {
     private readonly PatrolRepository _repo;
     private List<PatrolRecord> _allRecords = [];

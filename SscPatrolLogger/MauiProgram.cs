@@ -1,31 +1,52 @@
 ﻿using Microsoft.Extensions.Logging;
 using SscPatrolLogger.Services;
+using SscPatrolLogger.ViewModels;
 
-namespace SscPatrolLogger
+namespace SscPatrolLogger;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("FontAwesomeSolid.otf", "FAS");
-                    fonts.AddFont("FontAwesomeRegular.otf", "FAR");
-                });
+        var builder = MauiApp.CreateBuilder();
 
-            builder.Services.AddSingleton<PatrolRepository>(provider => 
-                { string dbPath = Path.Combine(FileSystem.AppDataDirectory, "patrols.db3"); return new PatrolRepository(dbPath); });
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("FontAwesomeSolid.otf", "FAS");
+                fonts.AddFont("FontAwesomeRegular.otf", "FAR");
+            });
 
 #if DEBUG
-            builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
-        }
+        // Data
+        builder.Services.AddSingleton(sp =>
+        {
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "patrols.db3");
+            return new PatrolRepository(dbPath);
+        });
+
+        // Services
+        builder.Services.AddSingleton<IAlertService, AlertService>();
+        builder.Services.AddSingleton(new HttpClient());
+        builder.Services.AddSingleton<IReportSender, EmailJsReportSender>();
+
+        // ViewModels (state preserved)
+        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<ThemeViewModel>();
+
+
+        // Shell
+        builder.Services.AddSingleton<AppShell>();
+
+        // Pages (must be transient with Shell tabs)
+        builder.Services.AddTransient<MainPage>();
+        builder.Services.AddTransient<HistoryPage>();
+        return builder.Build();
     }
 }
