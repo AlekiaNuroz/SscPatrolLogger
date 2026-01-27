@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:BasePage
+    x:Class="SscPatrolLogger.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SscPatrolLogger">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="10">
+
+            <!-- Title Row -->
+            <Grid ColumnDefinitions="*,Auto"
+                  VerticalOptions="Center">
+                <Label Text="SSC Patrol Logger"
+                       FontSize="28"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+
+                <HorizontalStackLayout Grid.Column="1"
+                                       Spacing="10"
+                                       VerticalOptions="Center">
+                    <Label x:Name="ThemeIcon"
+                           Text="🌞"
+                           FontSize="20"
+                           VerticalOptions="Center" />
+
+                    <Switch x:Name="DarkModeSwitch"
+                            Toggled="DarkModeSwitch_Toggled"
+                            VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Grid>
+
+            <!-- Shift Picker -->
+            <VerticalStackLayout>
+                <Label Text="Shift"
+                       FontAttributes="Bold"
+                       FontSize="18" />
+                <Picker x:Name="ShiftPicker" />
+            </VerticalStackLayout>
+
+            <!-- Patrol Picker -->
+            <VerticalStackLayout>
+                <Label Text="Patrol Location"
+                       FontAttributes="Bold"
+                       FontSize="18" />
+                <Picker x:Name="PatrolPicker"
+                        SelectedIndexChanged="PatrolPicker_SelectedIndexChanged" />
+            </VerticalStackLayout>
+
+            <!-- Start/End Times -->
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <Border Grid.Column="0"
+                    Padding="10"
+                    StrokeThickness="1"
+                    Stroke="#CCC"
+                    StrokeShape="RoundRectangle 8">
+                    <VerticalStackLayout>
+                        <Label Text="Start"
+                               FontAttributes="Bold"
+                               FontSize="16" />
+                        <Label x:Name="StartTimeLabel"
+                               Text="—"
+                               FontSize="22" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1"
+                    Padding="10"
+                    StrokeThickness="1"
+                    Stroke="#CCC"
+                    StrokeShape="RoundRectangle 8">
+                    <VerticalStackLayout>
+                        <Label Text="End"
+                               FontAttributes="Bold"
+                               FontSize="16" />
+                        <Label x:Name="EndTimeLabel"
+                               Text="—"
+                               FontSize="22" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Start/End Button -->
+            <Button x:Name="StartEndButton"
+                    Text="Start Patrol"
+                    BackgroundColor="#0057D9"
+                    TextColor="White"
+                    FontSize="22"
+                    Clicked="HandleStartEnd" />
+
+            <!-- Reset Buttons -->
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Reset Patrol"
+                        BackgroundColor="#AA0000"
+                        TextColor="White"
+                        Clicked="ResetPatrolButton_Clicked" />
+
+                <Button Grid.Column="1"
+                        Text="Reset All"
+                        BackgroundColor="#AA0000"
+                        TextColor="White"
+                        Clicked="ResetAllButton_Clicked" />
+            </Grid>
+
+            <!-- Submit All -->
+            <Button Text="Submit All Patrols"
+                    BackgroundColor="#008000"
+                    TextColor="White"
+                    FontSize="20"
+                    Clicked="SubmitAllButton_Clicked" />
+
+            <!-- Status List -->
+            <VerticalStackLayout>
+                <Label Text="Patrol Status"
+                       FontAttributes="Bold"
+                       FontSize="20" />
+
+                <CollectionView x:Name="StatusCollectionView"
+                                ItemsSource="{Binding StatusItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding StatusText}"
+                                   FontSize="16"
+                                   Margin="4" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</local:BasePage>

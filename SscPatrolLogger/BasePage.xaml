@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SscPatrolLogger.BasePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <ContentPage.ControlTemplate>
+        <ControlTemplate>
+            <Grid RowDefinitions="*,Auto">
+
+                <!-- Child page content renders here -->
+                <ContentPresenter Grid.Row="0" />
+
+                <!-- Bottom navigation bar -->
+                <Grid Grid.Row="1"
+                      BackgroundColor="#222"
+                      Padding="12"
+                      ColumnDefinitions="*,*">
+
+                    <Button Grid.Column="0"
+                            Text="&#xf015;"
+                            FontFamily="FAS"
+                            FontSize="28"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            Clicked="OnHomeClicked" />
+
+                    <Button Grid.Column="1"
+                            Text="&#xf1da;"
+                            FontFamily="FAS"
+                            FontSize="28"
+                            BackgroundColor="Transparent"
+                            TextColor="White"
+                            Clicked="OnHistoryClicked" />
+                </Grid>
+
+            </Grid>
+        </ControlTemplate>
+    </ContentPage.ControlTemplate>
+
+</ContentPage>
