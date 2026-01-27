@@ -1,4 +1,62 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="456" height="456" fill="#512BD4" />
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="180" y1="140" x2="860" y2="900" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B1220"></stop>
+      <stop offset="1" stop-color="#102A43"></stop>
+    </linearGradient>
+
+    <linearGradient id="accent" x1="260" y1="220" x2="760" y2="820" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4FD1C5"></stop>
+      <stop offset="1" stop-color="#2B6CB0"></stop>
+    </linearGradient>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="22" flood-color="#000000" flood-opacity="0.35"></feDropShadow>
+    </filter>
+
+    <clipPath id="clipRound">
+      <rect x="96" y="96" width="832" height="832" rx="192"></rect>
+    </clipPath>
+  </defs>
+
+  <!-- Rounded square background -->
+  <g clip-path="url(#clipRound)">
+    <rect x="96" y="96" width="832" height="832" rx="192" fill="url(#bg)"></rect>
+    <path d="M-70 360 L360 -70 L1100 700 L700 1100 Z" fill="#FFFFFF" opacity="0.05"></path>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <!-- Shield -->
+    <path d="M512 182
+         C512 182 360 238 296 270
+         V474
+         C296 646 405 768 512 834
+         C619 768 728 646 728 474
+         V270
+         C664 238 512 182 512 182 Z" fill="none" stroke="url(#accent)" stroke-width="40" stroke-linejoin="round"></path>
+
+    <!-- Location pin (drawn first so route is clearly separate and never "hides" dots) -->
+    <path d="M512 330
+         C452 330 404 378 404 438
+         C404 518 512 642 512 642
+         C512 642 620 518 620 438
+         C620 378 572 330 512 330 Z" fill="url(#accent)"></path>
+    <circle cx="512" cy="438" r="44" fill="#0B1220" opacity="0.95"></circle>
+
+    <!-- Route line (explicitly goes around the pin area) -->
+    <path d="M372 560
+         C402 520 412 495 420 455
+         C430 408 470 378 500 360" fill="none" stroke="#E6FFFA" stroke-opacity="0.9" stroke-width="22" stroke-linecap="round"></path>
+    <path d="M590 360
+         C630 368 650 382 668 410
+         C690 444 700 470 704 500" fill="none" stroke="#E6FFFA" stroke-opacity="0.9" stroke-width="22" stroke-linecap="round"></path>
+
+    <!-- Route dots (ALL outside the pin silhouette now) -->
+    <circle cx="372" cy="560" r="18" fill="#E6FFFA" opacity="0.95"></circle>
+    <circle cx="500" cy="360" r="16" fill="#E6FFFA" opacity="0.95"></circle>
+    <circle cx="704" cy="500" r="18" fill="#E6FFFA" opacity="0.95"></circle>
+
+    <!-- Tiny "log tick" accent -->
+    <path d="M610 600 L642 632 L704 566" fill="none" stroke="#E6FFFA" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"></path>
+  </g>
 </svg>
