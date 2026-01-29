@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Shell
     x:Class="SscPatrolLogger.AppShell"
+    x:Name="RootShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SscPatrolLogger"
-    xmlns:viewmodels="clr-namespace:SscPatrolLogger.ViewModels">
+    xmlns:viewmodels="clr-namespace:SscPatrolLogger.ViewModels"
+    x:DataType="viewmodels:ThemeViewModel">
 
     <Shell.BindingContext>
         <viewmodels:ThemeViewModel />
@@ -12,23 +14,31 @@
 
     <Shell.TitleView>
         <Grid ColumnDefinitions="*,Auto"
-              VerticalOptions="Center">
+          VerticalOptions="Center"
+          BackgroundColor="HotPink"
+          Padding="10,0">
 
             <!-- Page title -->
             <Label
-                Text="{Binding Source={RelativeSource AncestorType={x:Type Shell}}, Path=CurrentItem.CurrentItem.Title}"
-                FontSize="18"
-                FontAttributes="Bold"
-                VerticalOptions="Center" />
+            Text="{Binding Source={x:Reference RootShell}, Path=CurrentItem.Title}"
+            TextColor="{AppThemeBinding Light=Black, Dark=White}"
+            FontSize="18"
+            FontAttributes="Bold"
+            VerticalOptions="Center" />
 
             <!-- Theme toggle -->
             <HorizontalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
-                <Label Text="{Binding ThemeIcon}" FontSize="18" VerticalOptions="Center"/>
+                <Label
+                Text="{Binding ThemeIcon}"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                FontSize="18"
+                VerticalOptions="Center" />
                 <Switch IsToggled="{Binding IsDarkMode}" VerticalOptions="Center" />
             </HorizontalStackLayout>
 
         </Grid>
     </Shell.TitleView>
+
     <TabBar>
 
         <!-- Home -->
@@ -54,6 +64,20 @@
                 <FontImageSource
                     FontFamily="FAS"
                     Glyph="&#xF1DA;"
+                    Size="18"
+                    Color="{AppThemeBinding Light=Black, Dark=White}" />
+            </ShellContent.Icon>
+        </ShellContent>
+
+        <!-- Settings -->
+        <ShellContent
+            Title="Settings"
+            Route="settings"
+            ContentTemplate="{DataTemplate local:SettingsPage}">
+            <ShellContent.Icon>
+                <FontImageSource
+                    FontFamily="FAS"
+                    Glyph="&#xF013;"
                     Size="18"
                     Color="{AppThemeBinding Light=Black, Dark=White}" />
             </ShellContent.Icon>

@@ -3,13 +3,26 @@
     x:Class="SscPatrolLogger.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SscPatrolLogger" xmlns:viewmodels="clr-namespace:SscPatrolLogger.ViewModels" x:DataType="viewmodels:MainPageViewModel">
+    xmlns:local="clr-namespace:SscPatrolLogger"
+    xmlns:viewmodels="clr-namespace:SscPatrolLogger.ViewModels"
+    x:DataType="viewmodels:MainPageViewModel"
+    Title="Main">
 
     <Grid Padding="20" RowDefinitions="Auto,*">
 
         <!-- Top content -->
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Spacing="10">
+
+                <Border StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="5">
+                    <VerticalStackLayout Spacing="5">
+                        <HorizontalStackLayout Spacing="5">
+                            <Label Text="Send-to email:" FontAttributes="Bold" Opacity="0.70" />
+                            <Label Text="{Binding SendToEmailDisplay}" Opacity="0.70" />
+                        </HorizontalStackLayout>
+                        <Label Text="Used when you submit patrol logs." FontSize="12" Opacity="0.40" />
+                    </VerticalStackLayout>
+                </Border>
 
                 <!-- Shift Picker -->
                 <VerticalStackLayout>

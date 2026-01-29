@@ -3,7 +3,7 @@ using SscPatrolLogger.Models;
 
 namespace SscPatrolLogger.Services;
 
-public class PatrolRepository
+public class PatrolRepository : IPatrolRepository
 {
     private readonly SQLiteAsyncConnection _db;
 

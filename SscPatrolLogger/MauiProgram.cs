@@ -24,8 +24,8 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        // Data
-        builder.Services.AddSingleton(sp =>
+        // Repositories
+        builder.Services.AddSingleton<IPatrolRepository>(sp =>
         {
             var dbPath = Path.Combine(FileSystem.AppDataDirectory, "patrols.db3");
             return new PatrolRepository(dbPath);
@@ -35,10 +35,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAlertService, AlertService>();
         builder.Services.AddSingleton(new HttpClient());
         builder.Services.AddSingleton<IReportSender, EmailJsReportSender>();
+        builder.Services.AddSingleton<IAppSettings, ApplicationSettings>();
 
         // ViewModels (state preserved)
         builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<HistoryPageViewModel>();
         builder.Services.AddSingleton<ThemeViewModel>();
+        builder.Services.AddSingleton<SettingsPageViewModel>();
 
 
         // Shell
@@ -47,6 +50,7 @@ public static class MauiProgram
         // Pages (must be transient with Shell tabs)
         builder.Services.AddTransient<MainPage>();
         builder.Services.AddTransient<HistoryPage>();
+        builder.Services.AddTransient<SettingsPage>();
         return builder.Build();
     }
 }

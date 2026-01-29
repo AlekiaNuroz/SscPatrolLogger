@@ -3,13 +3,11 @@ using System.Text.Json;
 
 namespace SscPatrolLogger.Services;
 
-public sealed class EmailJsReportSender : IReportSender
+public sealed class EmailJsReportSender(HttpClient http) : IReportSender
 {
-    private readonly HttpClient _http;
+    private readonly HttpClient _http = http;
 
-    public EmailJsReportSender(HttpClient http) => _http = http;
-
-    public async Task SendEmailJsAsync(string shift, string rowsHtml)
+    public async Task SendEmailJsAsync(string toEmail, string shift, string rowsHtml)
     {
         const string serviceId = "service_785wfif";
         const string templateId = "template_70klndz";
@@ -22,6 +20,7 @@ public sealed class EmailJsReportSender : IReportSender
             user_id = publicKey,
             template_params = new
             {
+                to_email = toEmail,
                 shift,
                 rows = rowsHtml
             }

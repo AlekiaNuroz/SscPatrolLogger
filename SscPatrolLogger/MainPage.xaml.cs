@@ -16,6 +16,11 @@ public partial class MainPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        if (BindingContext is ViewModels.MainPageViewModel vm)
+        {
+            vm.RefreshSettingsForUi();
+        }
         await _vm.InitializeAsync();
     }
 }

@@ -60,6 +60,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Signing\**" />
+	  <Compile Remove="Signing\**" />
+	  <EmbeddedResource Remove="Signing\**" />
+	  <MauiCss Remove="Signing\**" />
+	  <MauiXaml Remove="Signing\**" />
+	  <None Remove="Signing\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.30" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.2" />
@@ -67,14 +76,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Signing\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="BasePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="HistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

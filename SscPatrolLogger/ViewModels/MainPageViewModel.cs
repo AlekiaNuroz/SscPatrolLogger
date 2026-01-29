@@ -9,9 +9,10 @@ namespace SscPatrolLogger.ViewModels;
 
 public sealed partial class MainPageViewModel : ObservableObject
 {
-    private readonly PatrolRepository _repo;
+    private readonly IPatrolRepository _repo;
     private readonly IAlertService _alerts;
     private readonly IReportSender _sender;
+    private readonly IAppSettings _appSettings;
 
     private readonly List<string> _patrolList =
     [
@@ -62,11 +63,17 @@ public sealed partial class MainPageViewModel : ObservableObject
     [ObservableProperty]
     private string themeIcon = "🌞";
 
-    public MainPageViewModel(PatrolRepository repo, IAlertService alerts, IReportSender sender)
+    [ObservableProperty]
+    private string sendToEmailDisplay = "Not set";
+
+    public MainPageViewModel(IPatrolRepository repo, IAlertService alerts, IReportSender sender, IAppSettings appSettings)
     {
         _repo = repo;
         _alerts = alerts;
         _sender = sender;
+        _appSettings = appSettings;
+
+        RefreshSendToEmailDisplay();
 
         foreach (var p in _patrolList)
         {
@@ -78,6 +85,15 @@ public sealed partial class MainPageViewModel : ObservableObject
         AutoDetectShift();
         InitializeTheme();
     }
+
+    public void RefreshSettingsForUi() => RefreshSendToEmailDisplay();
+
+    private void RefreshSendToEmailDisplay()
+    {
+        var email = _appSettings.SendToEmail?.Trim();
+        SendToEmailDisplay = string.IsNullOrWhiteSpace(email) ? "Not set" : email;
+    }
+
 
     public async Task InitializeAsync()
     {
@@ -235,8 +251,24 @@ public sealed partial class MainPageViewModel : ObservableObject
 
         try
         {
-            await _sender.SendEmailJsAsync(shift, rowsBuilder.ToString());
-            await _alerts.ShowAsync("Success", "All patrols sent.");
+            var toEmail = _appSettings.SendToEmail;
+            if (string.IsNullOrWhiteSpace(toEmail))
+            {
+                await _alerts.ShowAsync("Missing setting", "Please set your Send-to email in Settings before submitting.");
+                await Shell.Current.GoToAsync("//settings");
+                RefreshSendToEmailDisplay();
+                return;
+            }
+
+            RefreshSendToEmailDisplay();
+
+            var confirmed = await _alerts.ConfirmAsync("Confirm send",$"Send patrol log for \"{SelectedShift}\" to \"{toEmail}\"", "Send", "Cancel");
+
+            if (confirmed)
+            {
+                await _sender.SendEmailJsAsync(toEmail, shift, rowsBuilder.ToString());
+                await _alerts.ShowAsync("Success", "All patrols sent.");
+            }
 
             foreach (var p in _patrolList)
                 _patrolTimes[p] = ("", "");

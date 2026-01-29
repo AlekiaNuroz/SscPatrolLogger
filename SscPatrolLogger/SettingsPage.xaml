@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="SscPatrolLogger.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:SscPatrolLogger.ViewModels"
+    x:DataType="viewmodels:SettingsPageViewModel"
+    Title="Settings">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label
+                Text="Email"
+                FontSize="18"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Send-to email"
+                FontSize="14"
+                Opacity="0.85" />
+
+            <Entry
+                Text="{Binding SendToEmail}"
+                Placeholder="name@example.com"
+                Keyboard="Email"
+                ClearButtonVisibility="WhileEditing" />
+
+            <Label
+                Text="This address will be used when you submit patrol logs."
+                FontSize="12"
+                Opacity="0.70" />
+
+            <Button
+                Text="Save"
+                Command="{Binding SaveCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

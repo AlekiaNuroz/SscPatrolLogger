@@ -3,56 +3,113 @@
     x:Class="SscPatrolLogger.HistoryPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:SscPatrolLogger">
+    xmlns:viewmodels="clr-namespace:SscPatrolLogger.ViewModels"
+    x:DataType="viewmodels:HistoryPageViewModel"
+    Title="History">
 
-    <VerticalStackLayout Padding="10"
-                         Spacing="12">
+    <Grid Padding="10"
+          RowDefinitions="Auto,*"
+          RowSpacing="12">
 
-        <!-- Search bar -->
-        <SearchBar x:Name="SearchBar"
-                   Placeholder="Search by location..."
-                   TextChanged="OnFilterChanged" />
+        <!-- Top controls -->
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
 
-        <!-- Filters -->
-        <Grid ColumnDefinitions="*,*"
-              ColumnSpacing="10">
-            <VerticalStackLayout Grid.Column="0">
-                <Label Text="Shift"
-                       FontAttributes="Bold" />
-                <Picker x:Name="ShiftFilter"
+            <!-- Search -->
+            <SearchBar
+                x:Name="SearchBar"
+                Placeholder="Search by location..."
+                Text="{Binding SearchText, Mode=TwoWay}"
+                TextChanged="OnFilterChanged" />
+
+            <!-- Filters -->
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto,Auto,Auto"
+                  ColumnSpacing="10"
+                  RowSpacing="8">
+
+                <!-- Shift -->
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label Text="Shift" FontAttributes="Bold" />
+                    <Picker
+                        x:Name="ShiftFilter"
+                        ItemsSource="{Binding ShiftOptions}"
+                        SelectedItem="{Binding SelectedShift, Mode=TwoWay}"
                         SelectedIndexChanged="OnFilterChanged" />
-            </VerticalStackLayout>
+                </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Column="1">
-                <Label Text="Date"
-                       FontAttributes="Bold" />
-                <DatePicker x:Name="DateFilter"
-                            DateSelected="OnFilterChanged" />
-            </VerticalStackLayout>
-        </Grid>
+                <!-- Date Range Status + All -->
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Spacing="6">
+                    <Label Text="Date Range" FontAttributes="Bold" />
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Label
+                            Grid.Column="0"
+                            Text="{Binding DateRangeStatus}"
+                            VerticalOptions="Center"
+                            LineBreakMode="TailTruncation" />
+                        <Button
+                            Grid.Column="1"
+                            Text="All"
+                            Command="{Binding ClearDateRangeCommand}"
+                            Padding="12,6" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <!-- From -->
+                <VerticalStackLayout Grid.Row="2" Grid.Column="0">
+                    <Label Text="From" FontAttributes="Bold" />
+                    <DatePicker
+                        x:Name="FromDatePicker"
+                        Date="{Binding FromDateDisplay, Mode=TwoWay}"
+                        DateSelected="OnFromDateSelected" />
+                </VerticalStackLayout>
+
+                <!-- To -->
+                <VerticalStackLayout Grid.Row="2" Grid.Column="1">
+                    <Label Text="To" FontAttributes="Bold" />
+                    <DatePicker
+                        x:Name="ToDatePicker"
+                        Date="{Binding ToDateDisplay, Mode=TwoWay}"
+                        DateSelected="OnToDateSelected" />
+                </VerticalStackLayout>
+
+                <!-- Tiny hint -->
+                <Label
+                    Grid.Row="3"
+                    Grid.ColumnSpan="2"
+                    Text="Tip: Tap All to show every date."
+                    FontSize="12"
+                    Opacity="0.40" />
+            </Grid>
+
+        </VerticalStackLayout>
 
         <!-- History list -->
-        <CollectionView x:Name="HistoryCollectionView"
-                        IsGrouped="True"
-                        ItemsSource="{Binding Groups}">
+        <CollectionView
+            Grid.Row="1"
+            x:Name="HistoryCollectionView"
+            IsGrouped="True"
+            ItemsSource="{Binding Groups}">
+
             <CollectionView.GroupHeaderTemplate>
-                <DataTemplate>
-                    <Label Text="{Binding Date}"
-                           FontAttributes="Bold"
-                           FontSize="18"
-                           Margin="0,10,0,4" />
+                <DataTemplate x:DataType="viewmodels:HistoryGroup">
+                    <Label
+                        Text="{Binding Date}"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Margin="10,12,10,6" />
                 </DataTemplate>
             </CollectionView.GroupHeaderTemplate>
 
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Label Text="{Binding Line}"
-                           FontSize="16"
-                           Margin="10,2" />
+                <DataTemplate x:DataType="viewmodels:HistoryItem">
+                    <Label
+                        Text="{Binding Line}"
+                        FontSize="12"
+                        Margin="10,2" />
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
         </CollectionView>
 
-    </VerticalStackLayout>
-
+    </Grid>
 </ContentPage>

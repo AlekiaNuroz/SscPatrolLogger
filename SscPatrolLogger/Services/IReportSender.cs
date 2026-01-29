@@ -2,5 +2,5 @@
 
 public interface IReportSender
 {
-    Task SendEmailJsAsync(string shift, string rowsHtml);
+    Task SendEmailJsAsync(string toEmail, string shift, string rowsHtml);
 }
